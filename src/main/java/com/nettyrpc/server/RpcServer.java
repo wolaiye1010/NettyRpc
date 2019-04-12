@@ -19,20 +19,15 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * RPC Server
  *
  * @author huangyong, luxiaoxun
  */
-public class RpcServer implements ApplicationContextAware, InitializingBean {
+public class RpcServer {
 
     private static final Logger logger = LoggerFactory.getLogger(RpcServer.class);
 
@@ -52,23 +47,6 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
     public RpcServer(String serverAddress, ServiceRegistry serviceRegistry) {
         this.serverAddress = serverAddress;
         this.serviceRegistry = serviceRegistry;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext ctx) throws BeansException {
-        Map<String, Object> serviceBeanMap = ctx.getBeansWithAnnotation(RpcService.class);
-        if (MapUtils.isNotEmpty(serviceBeanMap)) {
-            for (Object serviceBean : serviceBeanMap.values()) {
-                String interfaceName = serviceBean.getClass().getAnnotation(RpcService.class).value().getName();
-                logger.info("Loading service: {}", interfaceName);
-                handlerMap.put(interfaceName, serviceBean);
-            }
-        }
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        start();
     }
 
     public void stop() {

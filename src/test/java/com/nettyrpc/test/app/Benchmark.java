@@ -3,6 +3,7 @@ package com.nettyrpc.test.app;
 import com.nettyrpc.client.RpcClient;
 import com.nettyrpc.registry.ServiceDiscovery;
 import com.nettyrpc.test.client.HelloService;
+import org.junit.Assert;
 
 /**
  * Created by luxiaoxun on 2016-03-11.
@@ -11,8 +12,17 @@ public class Benchmark {
 
     public static void main(String[] args) throws InterruptedException {
 
-        ServiceDiscovery serviceDiscovery = new ServiceDiscovery("10.245.247.105:2181");
+        ServiceDiscovery serviceDiscovery = new ServiceDiscovery("10.126.102.152:3181");
         final RpcClient rpcClient = new RpcClient(serviceDiscovery);
+
+
+
+
+        HelloService helloService = rpcClient.create(HelloService.class);
+        String result = helloService.hello("World");
+        Assert.assertEquals("Hello! World", result);
+
+        System.exit(0);
 
         int threadNum = 10;
         final int requestNum = 100;
