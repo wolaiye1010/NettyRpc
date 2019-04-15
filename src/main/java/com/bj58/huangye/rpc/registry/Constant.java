@@ -5,10 +5,25 @@ package com.bj58.huangye.rpc.registry;
  *
  * @author huangyong
  */
-public interface Constant {
+public class Constant {
 
-    int ZK_SESSION_TIMEOUT = 5000;
+    public static final int ZK_SESSION_TIMEOUT = 5000;
 
-    String ZK_REGISTRY_PATH = "/registry";
-    String ZK_DATA_PATH = ZK_REGISTRY_PATH + "/data";
+    private static final String ZK_REGISTRY_PATH = "/registry";
+
+    public static final String ZK_DATA_PATH = getZkRegistryPath() + "/data";
+
+    private static String env;
+
+    public static String getEnv() {
+        return env;
+    }
+
+    public static void setEnv(String env) {
+        Constant.env = env;
+    }
+
+    public static String getZkRegistryPath() {
+        return ZK_REGISTRY_PATH+"/"+env;
+    }
 }

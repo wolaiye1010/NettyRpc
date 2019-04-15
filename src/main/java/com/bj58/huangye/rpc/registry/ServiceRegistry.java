@@ -63,9 +63,9 @@ public class ServiceRegistry {
 
     private void AddRootNode(ZooKeeper zk){
         try {
-            Stat s = zk.exists(Constant.ZK_REGISTRY_PATH, false);
+            Stat s = zk.exists(Constant.getZkRegistryPath(), false);
             if (s == null) {
-                zk.create(Constant.ZK_REGISTRY_PATH, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                zk.create(Constant.getZkRegistryPath(), new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
         } catch (KeeperException e) {
             logger.error(e.toString());
