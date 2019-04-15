@@ -1,9 +1,7 @@
 package com.bj58.huangye.rpc.registry;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.bj58.huangye.rpc.client.ConnectManage;
@@ -23,8 +21,6 @@ import org.slf4j.LoggerFactory;
 public class ServiceDiscovery {
 
     private static final Logger logger = LoggerFactory.getLogger(ServiceDiscovery.class);
-
-    private CountDownLatch latch = new CountDownLatch(1);
 
     private volatile List<String> dataList = new ArrayList<>();
 
