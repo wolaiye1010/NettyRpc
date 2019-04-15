@@ -17,6 +17,6 @@ public class RpcBootstrapWithoutSpring1 {
                 .setServerAddress("127.0.0.1:18866")
                 .setZkConnectionString("10.126.102.152:3181,10.126.91.8:3181,10.126.91.84:3181")
                 .addService(HelloService.class.getName(),helloService)
-                .init();
+                .serverInit();
     }
 }

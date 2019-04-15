@@ -18,8 +18,8 @@ public class Constant {
     public static String getZkRegistryPath() {
         return String.format("%s/%s/%s",
                 ZK_REGISTRY_PATH
-                ,RpcInit.getServerConfig().getServiceName()
-                ,RpcInit.getServerConfig().getEnv()
+                ,RpcInit.getRpcConfig().getServiceName()
+                ,RpcInit.getRpcConfig().getEnv()
         );
     }
 }

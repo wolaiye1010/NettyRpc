@@ -1,5 +1,6 @@
 package com.bj58.huangye.rpc.server;
 
+import com.bj58.huangye.rpc.registry.ServiceDiscovery;
 import com.bj58.huangye.rpc.registry.ServiceRegistry;
 
 import java.util.Map;
@@ -9,22 +10,22 @@ import java.util.Map;
  */
 public class RpcInit {
 
-    public static ServerConfig builder(){
-        return new ServerConfig();
+    public static RpcConfig builder(){
+        return new RpcConfig();
     }
 
-    private static ServerConfig serverConfig;
+    private static RpcConfig rpcConfig;
 
-    public static ServerConfig getServerConfig() {
-        return serverConfig;
+    public static RpcConfig getRpcConfig() {
+        return rpcConfig;
     }
 
-    public static void init(ServerConfig serverConfig){
-        RpcInit.serverConfig=serverConfig;
+    public static void serverInit(RpcConfig rpcConfig){
+        RpcInit.rpcConfig = rpcConfig;
         ServiceRegistry serviceRegistry = new ServiceRegistry();
-        RpcServer rpcServer = new RpcServer(serverConfig.getServerAddress(), serviceRegistry);
+        RpcServer rpcServer = new RpcServer(rpcConfig.getServerAddress(), serviceRegistry);
 
-        Map<String, Object> handlerMap = serverConfig.getHandlerMap();
+        Map<String, Object> handlerMap = rpcConfig.getHandlerMap();
         for (Map.Entry<String, Object> stringObjectEntry : handlerMap.entrySet()) {
             rpcServer.addService(stringObjectEntry.getKey(),stringObjectEntry.getValue());
         }
@@ -34,6 +35,19 @@ public class RpcInit {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+
+    private static ServiceDiscovery serviceDiscovery;
+
+    public static ServiceDiscovery clientInit(RpcConfig rpcConfig){
+        if(null!=serviceDiscovery){
+            return serviceDiscovery;
+        }
+
+        RpcInit.rpcConfig = rpcConfig;
+        RpcInit.serviceDiscovery = new ServiceDiscovery();
+        return serviceDiscovery;
     }
 
 }

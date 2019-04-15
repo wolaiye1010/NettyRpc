@@ -1,6 +1,7 @@
 package com.bj58.huangye.rpc.registry;
 
 import com.bj58.huangye.rpc.server.RpcInit;
+import com.bj58.huangye.rpc.server.RpcConfig;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
@@ -28,10 +29,25 @@ public class ZkService {
         return zkService;
     }
 
+    public static ZooKeeper getZk(){
+        if(null==zk){
+            getInstance();
+        }
+        return zk;
+    }
+
     private ZooKeeper connectServer() {
         ZooKeeper zk = null;
         try {
-            zk = new ZooKeeper(RpcInit.getServerConfig().getZkConnectionString(), Constant.ZK_SESSION_TIMEOUT, new Watcher() {
+            String connectionString=null;
+            RpcConfig rpcConfig =RpcInit.getRpcConfig();
+            if(null!= rpcConfig){
+                connectionString= rpcConfig.getZkConnectionString();
+            }else{
+                throw new RuntimeException("请先初始化 zk配置");
+            }
+
+            zk = new ZooKeeper(connectionString, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
                 @Override
                 public void process(WatchedEvent event) {
                     if (event.getState() == Event.KeeperState.SyncConnected) {
@@ -54,7 +70,7 @@ public class ZkService {
             if(null==stat){
                 createNode(path,data);
             }else{
-                zk.setData(path,data.getBytes(),stat.getVersion());
+                zk.setData(path,data.getBytes(),-1);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

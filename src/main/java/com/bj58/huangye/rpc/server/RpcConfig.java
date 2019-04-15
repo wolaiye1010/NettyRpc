@@ -1,5 +1,6 @@
 package com.bj58.huangye.rpc.server;
 
+import com.bj58.huangye.rpc.registry.ServiceDiscovery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,10 +10,9 @@ import java.util.Map;
 /**
  * Created by zhudongchang on 2019-04-15 14:28
  */
-public class ServerConfig {
+public class RpcConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerConfig.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(RpcConfig.class);
 
     private String env;
 
@@ -26,7 +26,7 @@ public class ServerConfig {
         return serverAddress;
     }
 
-    public ServerConfig setServerAddress(String serverAddress) {
+    public RpcConfig setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
         return this;
     }
@@ -34,7 +34,7 @@ public class ServerConfig {
 
     private Map<String, Object> handlerMap = new HashMap<>();
 
-    public ServerConfig addService(String interfaceName, Object serviceBean) {
+    public RpcConfig addService(String interfaceName, Object serviceBean) {
         if (!handlerMap.containsKey(interfaceName)) {
             logger.info("Loading service: {}", interfaceName);
             handlerMap.put(interfaceName, serviceBean);
@@ -51,7 +51,7 @@ public class ServerConfig {
         return env;
     }
 
-    public ServerConfig setEnv(String env) {
+    public RpcConfig setEnv(String env) {
         this.env = env;
         return this;
     }
@@ -60,7 +60,7 @@ public class ServerConfig {
         return serviceName;
     }
 
-    public ServerConfig setServiceName(String serviceName) {
+    public RpcConfig setServiceName(String serviceName) {
         this.serviceName = serviceName;
         return this;
     }
@@ -69,12 +69,16 @@ public class ServerConfig {
         return zkConnectionString;
     }
 
-    public ServerConfig setZkConnectionString(String zkConnectionString) {
+    public RpcConfig setZkConnectionString(String zkConnectionString) {
         this.zkConnectionString = zkConnectionString;
         return this;
     }
 
-    public void init(){
-        RpcInit.init(this);
+    public void serverInit(){
+        RpcInit.serverInit(this);
+    }
+
+    public ServiceDiscovery clientInit(){
+        return RpcInit.clientInit(this);
     }
 }

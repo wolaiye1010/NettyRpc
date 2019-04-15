@@ -28,12 +28,9 @@ public class ServiceDiscovery {
 
     private volatile List<String> dataList = new ArrayList<>();
 
-    private String registryAddress;
-    private ZooKeeper zookeeper;
+    private ZooKeeper zookeeper=ZkService.getZk();
 
-    public ServiceDiscovery(String registryAddress) {
-        this.registryAddress = registryAddress;
-        zookeeper = connectServer();
+    public ServiceDiscovery() {
         if (zookeeper != null) {
             watchNode(zookeeper);
         }
@@ -52,24 +49,6 @@ public class ServiceDiscovery {
             }
         }
         return data;
-    }
-
-    private ZooKeeper connectServer() {
-        ZooKeeper zk = null;
-        try {
-            zk = new ZooKeeper(registryAddress, Constant.ZK_SESSION_TIMEOUT, new Watcher() {
-                @Override
-                public void process(WatchedEvent event) {
-                    if (event.getState() == Event.KeeperState.SyncConnected) {
-                        latch.countDown();
-                    }
-                }
-            });
-            latch.await();
-        } catch (IOException | InterruptedException e) {
-            logger.error("", e);
-        }
-        return zk;
     }
 
     private void watchNode(final ZooKeeper zk) {
