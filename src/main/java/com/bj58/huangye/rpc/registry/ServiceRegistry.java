@@ -34,8 +34,7 @@ public class ServiceRegistry {
         if (data != null) {
             ZooKeeper zk = connectServer();
             if (zk != null) {
-                AddRootNode(zk); // Add root node if not exist
-                createNode(zk, data);
+                setNode(zk,Constant.ZK_DATA_PATH,data);
             }
         }
     }
@@ -74,16 +73,43 @@ public class ServiceRegistry {
         }
     }
 
-    private void createNode(ZooKeeper zk, String data) {
+    private void setNode(ZooKeeper zk,String path,String data){
+        Stat stat = null;
         try {
-            byte[] bytes = data.getBytes();
-            String path = zk.create(Constant.ZK_DATA_PATH, bytes, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
-            logger.debug("create zookeeper node ({} => {})", path, data);
-        } catch (KeeperException e) {
-            logger.error("", e);
+            stat = zk.exists(Constant.getZkRegistryPath(), false);
+            if(null==stat){
+                createNode(zk,path,data);
+            }else{
+                zk.setData(path,data.getBytes(),stat.getVersion()+1);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        catch (InterruptedException ex){
-            logger.error("", ex);
+    }
+
+
+    private void createNode(ZooKeeper zk,String path, String data) {
+        String[] split = path.split("/");
+        String zkPath="";
+        for (int i = 0; i < split.length; i++) {
+            String item = split[i];
+            if("".equals(item)){
+                continue;
+            }
+            zkPath+="/"+item;
+            try {
+                Stat stat = zk.exists(zkPath, false);
+                if(null==stat){
+                    boolean isLast=i==(split.length-1);
+                    if(isLast){
+                        zk.create(zkPath, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                    }else{
+                        zk.create(zkPath, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
