@@ -62,7 +62,7 @@ public class ServiceDiscovery {
                 public void process(WatchedEvent event) {
                     if (event.getState() == Event.KeeperState.SyncConnected) {
                         latch.countDown();
-                    }a
+                    }l
                 }
             });
             latch.await();
