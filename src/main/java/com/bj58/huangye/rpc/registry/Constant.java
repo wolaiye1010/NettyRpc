@@ -1,5 +1,7 @@
 package com.bj58.huangye.rpc.registry;
 
+import com.bj58.huangye.rpc.server.RpcInit;
+
 /**
  * ZooKeeper constant
  *
@@ -13,17 +15,11 @@ public class Constant {
 
     public static final String ZK_DATA_PATH = getZkRegistryPath() + "/data";
 
-    private static String env;
-
-    public static String getEnv() {
-        return env;
-    }
-
-    public static void setEnv(String env) {
-        Constant.env = env;
-    }
-
     public static String getZkRegistryPath() {
-        return ZK_REGISTRY_PATH+"/"+env;
+        return String.format("%s/%s/%s",
+                ZK_REGISTRY_PATH
+                ,RpcInit.getServerConfig().getServiceName()
+                ,RpcInit.getServerConfig().getEnv()
+        );
     }
 }
