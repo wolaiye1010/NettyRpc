@@ -21,7 +21,7 @@ public class RpcInit {
 
     public static void init(ServerConfig serverConfig){
         RpcInit.serverConfig=serverConfig;
-        ServiceRegistry serviceRegistry = new ServiceRegistry(serverConfig.getZkConnectionString());
+        ServiceRegistry serviceRegistry = new ServiceRegistry();
         RpcServer rpcServer = new RpcServer(serverConfig.getServerAddress(), serviceRegistry);
 
         Map<String, Object> handlerMap = serverConfig.getHandlerMap();
