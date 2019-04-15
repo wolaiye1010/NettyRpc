@@ -54,7 +54,7 @@ public class ZkService {
             if(null==stat){
                 createNode(path,data);
             }else{
-                zk.setData(path,data.getBytes(),stat.getVersion()+1);
+                zk.setData(path,data.getBytes(),stat.getVersion());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
