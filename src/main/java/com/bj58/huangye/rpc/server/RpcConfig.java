@@ -74,11 +74,25 @@ public class RpcConfig {
         return this;
     }
 
+    private static Thread thread=new Thread();
+
     public void serverInit(){
-        RpcInit.serverInit(this);
+        RpcConfig rpcConfig=this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RpcInit.serverInit(rpcConfig);
+            }
+        }).start();
     }
 
-    public ServiceDiscovery clientInit(){
-        return RpcInit.clientInit(this);
+    public void clientInit(){
+        RpcConfig rpcConfig=this;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RpcInit.clientInit(rpcConfig);
+            }
+        }).start();
     }
 }
