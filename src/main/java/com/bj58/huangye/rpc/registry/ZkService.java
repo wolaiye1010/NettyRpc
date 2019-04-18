@@ -64,11 +64,15 @@ public class ZkService {
 
 
     public void setNode(String path,String data){
+        setNode(path,data,CreateMode.PERSISTENT);
+    }
+
+    public void setNode(String path,String data,CreateMode createMode){
         Stat stat = null;
         try {
             stat = zk.exists(path, false);
             if(null==stat){
-                createNode(path,data);
+                createNode(path,data,createMode);
             }else{
                 zk.setData(path,data.getBytes(),-1);
             }
@@ -78,7 +82,7 @@ public class ZkService {
     }
 
 
-    private void createNode(String path, String data) {
+    private void createNode(String path, String data,CreateMode createMode) {
         String[] split = path.split("/");
         String zkPath="";
         for (int i = 0; i < split.length; i++) {
@@ -92,7 +96,7 @@ public class ZkService {
                 if(null==stat){
                     boolean isLast=i==(split.length-1);
                     if(isLast){
-                        zk.create(zkPath, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+                        zk.create(zkPath, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode);
                     }else{
                         zk.create(zkPath, new byte[0], ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
                     }
