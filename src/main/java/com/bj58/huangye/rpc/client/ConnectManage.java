@@ -36,7 +36,7 @@ public class ConnectManage {
 
     private ReentrantLock lock = new ReentrantLock();
     private Condition connected = lock.newCondition();
-    private long connectTimeoutMillis = 6000;
+    private long connectTimeoutMillis = 100;
     private AtomicInteger roundRobin = new AtomicInteger(0);
     private volatile boolean isRuning = true;
 
@@ -168,6 +168,8 @@ public class ConnectManage {
                 boolean available = waitingForHandler();
                 if (available) {
                     size = connectedHandlers.size();
+                }else{
+                    throw new RuntimeException("没有可用 server");
                 }
             } catch (InterruptedException e) {
                 logger.error("Waiting for available node is interrupted! ", e);
