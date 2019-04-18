@@ -1,5 +1,6 @@
 package com.bj58.huangye.rpc.registry;
 
+import org.apache.zookeeper.CreateMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public class ServiceRegistry {
             return;
         }
 
-        zkService.setNode(Constant.getZkRegistryPath()+"/"+getIp(),data);
+        zkService.setNode(Constant.getZkRegistryPath()+"/"+getIp(),data, CreateMode.EPHEMERAL);
     }
 
     private static String  getIp(){
