@@ -66,7 +66,7 @@ public class ZkService {
     public void setNode(String path,String data){
         Stat stat = null;
         try {
-            stat = zk.exists(Constant.getZkRegistryPath(), false);
+            stat = zk.exists(path, false);
             if(null==stat){
                 createNode(path,data);
             }else{
