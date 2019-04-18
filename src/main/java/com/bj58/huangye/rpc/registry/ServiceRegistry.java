@@ -3,6 +3,9 @@ package com.bj58.huangye.rpc.registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * 服务注册
  *
@@ -20,6 +23,17 @@ public class ServiceRegistry {
             return;
         }
 
-        zkService.setNode(Constant.ZK_DATA_PATH,data);
+        zkService.setNode(Constant.getZkRegistryPath()+"/"+getIp(),data);
+    }
+
+    private static String  getIp(){
+        InetAddress inetAddress = null;
+        try {
+            inetAddress = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
+
+        return inetAddress.getHostAddress();
     }
 }

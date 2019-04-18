@@ -13,8 +13,6 @@ public class Constant {
 
     private static final String ZK_REGISTRY_PATH = "/registry";
 
-    public static final String ZK_DATA_PATH = getZkRegistryPath() + "/data";
-
     public static String getZkRegistryPath() {
         return String.format("%s/%s/%s",
                 ZK_REGISTRY_PATH
