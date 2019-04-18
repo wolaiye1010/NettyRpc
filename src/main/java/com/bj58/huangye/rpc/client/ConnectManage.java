@@ -36,7 +36,7 @@ public class ConnectManage {
 
     private ReentrantLock lock = new ReentrantLock();
     private Condition connected = lock.newCondition();
-    private long connectTimeoutMillis = 100;
+    private long connectTimeoutMillis = 3000;
     private AtomicInteger roundRobin = new AtomicInteger(0);
     private volatile boolean isRuning = true;
 
