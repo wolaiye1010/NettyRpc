@@ -31,7 +31,7 @@
 
 3. Run zookeeper
 
-   For example: zookeeper is running on 127.0.0.1:2181
+        For example: zookeeper is running on 127.0.0.1:2181
 
 4. Start server:
     ```java
