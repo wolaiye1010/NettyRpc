@@ -1,6 +1,6 @@
 # 轻量级rpc
 ### Design:
-![design](https://images2015.cnblogs.com/blog/434101/201603/434101-20160316102651631-1816064105.png)
+![design](https://pic1.58cdn.com.cn/p1/big/n_v2f60ebe688293431288861996682c2429.jpg)
 ### How to use
 
 1. Define an interface:
