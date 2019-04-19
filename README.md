@@ -1,13 +1,16 @@
 # 轻量级rpc
 1. Define an interface:
 
+```java
 		public interface HelloService { 
 			String hello(String name); 
 			String hello(Person person);
 		}
+```
 
 2. Implement the interface with annotation @RpcService:
 
+```java
 		@RpcService(HelloService.class)
 		public class HelloServiceImpl implements HelloService {
 			public HelloServiceImpl(){}
@@ -22,6 +25,7 @@
 				return "Hello! " + person.getFirstName() + " " + person.getLastName();
 			}
 		}
+```
 
 3. Run zookeeper
 
@@ -29,7 +33,7 @@
 
 4. Start server:
 
-```
+```java
     RpcInit.builder()
             .setEnv("offline")
             .setServiceName("serviceName")
@@ -42,7 +46,7 @@
 
 5. Use the client:
  
-```
+```java
         RpcInit.builder()
                 .setEnv("offline")
                 .setServiceName("serviceName")
