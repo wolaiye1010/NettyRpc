@@ -1,15 +1,4 @@
-# NettyRpc
-An RPC framework based on Netty, ZooKeeper and Spring  
-中文详情：[Chinese Details](http://www.cnblogs.com/luxiaoxun/p/5272384.html)
-### Features:
-* Simple code and framework
-* Non-blocking asynchronous call and Synchronous call support
-* Long lived persistent connection
-* High availability, load balance and failover
-* Service Discovery support by ZooKeeper
-### Design:
-![design](https://images2015.cnblogs.com/blog/434101/201603/434101-20160316102651631-1816064105.png)
-### How to use
+# 轻量级rpc
 1. Define an interface:
 
 		public interface HelloService { 
@@ -40,18 +29,27 @@ An RPC framework based on Netty, ZooKeeper and Spring
 
 4. Start server:
 
-   Start server with spring: RpcBootstrap
+```
+    RpcInit.builder()
+            .setEnv("offline")
+            .setServiceName("serviceName")
+            .setServerAddress("127.0.0.1:18866")
+            .setZkConnectionString("127.0.0.1:2181")
+            .addService(HelloService.class.getName(),helloService)
+            .serverInit();
+```
 
-   Start server without spring: RpcBootstrapWithoutSpring
 
 5. Use the client:
  
-		ServiceDiscovery serviceDiscovery = new ServiceDiscovery("127.0.0.1:2181");
-		final RpcClient rpcClient = new RpcClient(serviceDiscovery);
-		// Sync call
-		HelloService helloService = rpcClient.create(HelloService.class);
-		String result = helloService.hello("World");
-		// Async call
-		IAsyncObjectProxy client = rpcClient.createAsync(HelloService.class);
-		RPCFuture helloFuture = client.call("hello", "World");
-   		String result = (String) helloFuture.get(3000, TimeUnit.MILLISECONDS);
+```
+        RpcInit.builder()
+                .setEnv("offline")
+                .setServiceName("serviceName")
+                .setZkConnectionString("127.0.0.1:2181")
+                .clientInit();
+        HelloService helloService = RpcClient.create(HelloService.class);
+        String result = helloService.hello("World");
+        Assert.assertEquals("Hello! World", result);
+```
+
