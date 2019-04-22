@@ -4,6 +4,7 @@ import com.bj58.huangye.rpc.protocol.RpcResponse;
 import com.bj58.huangye.rpc.protocol.RpcDecoder;
 import com.bj58.huangye.rpc.protocol.RpcEncoder;
 import com.bj58.huangye.rpc.protocol.RpcRequest;
+import com.bj58.huangye.rpc.registry.Constant;
 import com.bj58.huangye.rpc.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -89,7 +90,7 @@ public class RpcServer {
                         @Override
                         public void initChannel(SocketChannel channel) throws Exception {
                             channel.pipeline()
-                                    .addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0))
+                                    .addLast(new LengthFieldBasedFrameDecoder(Constant.maxFrameLength, 0, 4, 0, 0))
                                     .addLast(new RpcDecoder(RpcRequest.class))
                                     .addLast(new RpcEncoder(RpcResponse.class))
                                     .addLast(new RpcHandler(handlerMap));

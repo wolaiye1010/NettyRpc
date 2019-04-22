@@ -4,6 +4,7 @@ import com.bj58.huangye.rpc.protocol.RpcDecoder;
 import com.bj58.huangye.rpc.protocol.RpcEncoder;
 import com.bj58.huangye.rpc.protocol.RpcRequest;
 import com.bj58.huangye.rpc.protocol.RpcResponse;
+import com.bj58.huangye.rpc.registry.Constant;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -17,7 +18,7 @@ public class RpcClientInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline cp = socketChannel.pipeline();
         cp.addLast(new RpcEncoder(RpcRequest.class));
-        cp.addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 0));
+        cp.addLast(new LengthFieldBasedFrameDecoder(Constant.maxFrameLength, 0, 4, 0, 0));
         cp.addLast(new RpcDecoder(RpcResponse.class));
         cp.addLast(new RpcClientHandler());
     }

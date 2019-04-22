@@ -9,6 +9,11 @@ import com.bj58.huangye.rpc.server.RpcInit;
  */
 public class Constant {
 
+    /**
+     * 16w
+     */
+    public static final int maxFrameLength=1024*1024*16;
+
     public static final int ZK_SESSION_TIMEOUT = 5000;
 
     private static final String ZK_REGISTRY_PATH = "/registry";
